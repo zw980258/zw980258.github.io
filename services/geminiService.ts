@@ -1,8 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Safely get the API key, defaulting to empty string if undefined
+// In a static file deployment without env injection, this prevents a crash.
+const apiKey = process.env.API_KEY || "";
+
+// Only initialize if key exists
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 export const getStyleAdvice = async (userQuery: string): Promise<string> => {
+  if (!ai) {
+    return "系统维护中：API 密钥未配置。请联系管理员或稍后再试。";
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
