@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { HERO_IMAGE_URL } from '../constants.ts';
 import { ArrowDown } from 'lucide-react';
 
