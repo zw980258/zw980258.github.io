@@ -502,12 +502,57 @@ const Contact: React.FC = () => {
 };
 
 // ==========================================
+// LOADING COMPONENT
+// ==========================================
+
+const LoadingScreen: React.FC = () => {
+  return (
+    <div className="fixed inset-0 z-[100] bg-[#0a0a0a] flex flex-col items-center justify-center">
+      <div className="font-logo text-3xl md:text-5xl text-white font-bold tracking-[0.3em] animate-pulse">
+        MIAOCHEN<span className="text-gold">.</span>
+      </div>
+      <div className="mt-6 w-32 h-[1px] bg-stone-800 overflow-hidden relative">
+        <div className="absolute inset-0 bg-gold animate-[shimmer_1.5s_infinite]"></div>
+      </div>
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// ==========================================
 // MAIN APP COMPONENT
 // ==========================================
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate initial asset loading time (e.g., fonts, images)
+    // Adjust time as needed. 2500ms allows the animation to play fully.
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <div className="bg-dark-bg min-h-screen text-white selection:bg-gold selection:text-black">
+    <div className="bg-dark-bg min-h-screen text-white selection:bg-gold selection:text-black animate-[fadeIn_1s_ease-in-out]">
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
       <Navigation />
       <main>
         <Hero />
